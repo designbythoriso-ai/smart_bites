@@ -1,0 +1,26 @@
+<body class="p-8 bg-gray-50">
+    <h2 class="text-2xl font-bold mb-6">Live Orders</h2>
+    <div id="orders-container" class="bg-white rounded shadow p-4 max-w-2xl"></div>
+
+    <script type="module">
+        import { supabase } from './supabase-client.js';
+
+        async function loadOrders() {
+            // Joins the orders table with the menu table to get the item name
+            let { data: orders, error } = await supabase
+                .from('orders')
+                .select('id, status, menu(name, price)');
+            
+            const container = document.getElementById('orders-container');
+            orders.forEach(order => {
+                container.innerHTML += `
+                    <div class="border-b py-3 flex justify-between">
+                        <div><span class="font-bold">#${order.id}</span> - ${order.menu.name}</div>
+                        <span class="px-2 py-1 bg-yellow-200 text-yellow-800 text-xs rounded">${order.status}</span>
+                    </div>
+                `;
+            });
+        }
+        loadOrders();
+    </script>
+</body>

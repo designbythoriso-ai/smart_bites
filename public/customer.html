@@ -1,0 +1,25 @@
+<!-- Include Tailwind as in index.html -->
+<body class="p-8 bg-gray-50">
+    <h2 class="text-2xl font-bold mb-6">Menu</h2>
+    <div id="menu-container" class="grid gap-4 max-w-lg"></div>
+
+    <script type="module">
+        import { supabase } from './supabase-client.js';
+
+        async function loadMenu() {
+            let { data: menu, error } = await supabase.from('menu').select('*');
+            const container = document.getElementById('menu-container');
+            
+            menu.forEach(item => {
+                container.innerHTML += `
+                    <div class="bg-white p-4 rounded shadow flex justify-between items-center">
+                        <span class="font-semibold">${item.name}</span>
+                        <span class="text-gray-600">$${item.price}</span>
+                        <button onclick="order(${item.id})" class="bg-blue-500 text-white px-4 py-1 rounded">Order</button>
+                    </div>
+                `;
+            });
+        }
+        loadMenu();
+    </script>
+</body>
