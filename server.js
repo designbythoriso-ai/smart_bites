@@ -7,8 +7,8 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fallback to index for SPA-like navigation
-app.get('*', (req, res) => {
+// Catch-all fallback for SPA navigation
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
